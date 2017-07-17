@@ -1,0 +1,381 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce Product Add-ons\n"
+"POT-Creation-Date: 2016-03-18 15:33-0800\n"
+"PO-Revision-Date: 2016-03-18 15:33-0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.3\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: admin/class-product-addon-admin.php:29 admin/html-global-admin.php:4
+msgid "Global Add-ons"
+msgstr ""
+
+#: admin/class-product-addon-admin.php:75
+msgid "Add-on saved successfully"
+msgstr ""
+
+#: admin/class-product-addon-admin.php:90
+msgid "Error: Global Add-on not found"
+msgstr ""
+
+#: admin/class-product-addon-admin.php:118
+#: admin/class-product-addon-admin.php:173
+msgid "Global Add-on Group"
+msgstr ""
+
+#: admin/class-product-addon-admin.php:130
+msgid "Add-on deleted successfully"
+msgstr ""
+
+#: admin/class-product-addon-admin.php:143 admin/html-global-admin-add.php:49
+msgid "Add-ons"
+msgstr ""
+
+#: admin/html-addon-option.php:5
+msgid "Default Label"
+msgstr ""
+
+#: admin/html-addon-panel.php:5
+msgid "Close all"
+msgstr ""
+
+#: admin/html-addon-panel.php:5
+msgid "Expand all"
+msgstr ""
+
+#: admin/html-addon-panel.php:23
+msgid "New Addon Group"
+msgstr ""
+
+#: admin/html-addon-panel.php:25
+msgid "Import"
+msgstr ""
+
+#: admin/html-addon-panel.php:26
+msgid "Export"
+msgstr ""
+
+#: admin/html-addon-panel.php:30
+msgid ""
+"Paste exported form data here and then save to import fields. The imported "
+"fields will be appended."
+msgstr ""
+
+#: admin/html-addon-panel.php:36
+msgid "Global Addon Exclusion"
+msgstr ""
+
+#: admin/html-addon-panel.php:37
+msgid "Check this to exclude this product from all Global Addons"
+msgstr ""
+
+#: admin/html-addon-panel.php:136
+msgid "Are you sure you want remove this add-on?"
+msgstr ""
+
+#: admin/html-addon-panel.php:215
+msgid "Are you sure you want delete this option?"
+msgstr ""
+
+#: admin/html-addon.php:10
+msgid "Remove"
+msgstr ""
+
+#: admin/html-addon.php:11
+msgid "Click to toggle"
+msgstr ""
+
+#: admin/html-addon.php:12
+msgid "Group"
+msgstr ""
+
+#: admin/html-addon.php:14
+msgid "Checkboxes"
+msgstr ""
+
+#: admin/html-addon.php:15
+msgid "Radio buttons"
+msgstr ""
+
+#: admin/html-addon.php:16
+msgid "Select box"
+msgstr ""
+
+#: admin/html-addon.php:17
+msgid "Custom input (textarea)"
+msgstr ""
+
+#: admin/html-addon.php:18
+msgid "File upload"
+msgstr ""
+
+#: admin/html-addon.php:19
+msgid "Custom price input"
+msgstr ""
+
+#: admin/html-addon.php:20
+msgid "Custom Input Multipler"
+msgstr ""
+
+#: admin/html-addon.php:21
+msgid "Custom input (text)"
+msgstr ""
+
+#: admin/html-addon.php:22
+msgid "Any text"
+msgstr ""
+
+#: admin/html-addon.php:23
+msgid "Only letters"
+msgstr ""
+
+#: admin/html-addon.php:24
+msgid "Only numbers"
+msgstr ""
+
+#: admin/html-addon.php:25
+msgid "Only letters and numbers"
+msgstr ""
+
+#: admin/html-addon.php:26
+msgid "Email address"
+msgstr ""
+
+#: admin/html-addon.php:35
+msgid "Group Name"
+msgstr ""
+
+#: admin/html-addon.php:39
+msgid "Required fields?"
+msgstr ""
+
+#: admin/html-addon.php:45
+msgid "Group Description"
+msgstr ""
+
+#: admin/html-addon.php:55
+msgid "Option Label"
+msgstr ""
+
+#: admin/html-addon.php:56
+msgid "Option Price"
+msgstr ""
+
+#: admin/html-addon.php:57
+msgid "Min"
+msgstr ""
+
+#: admin/html-addon.php:58
+msgid "Max"
+msgstr ""
+
+#: admin/html-addon.php:64
+msgid "New&nbsp;Option"
+msgstr ""
+
+#: admin/html-global-admin-add.php:4
+msgid "Add/Edit Global Add-on"
+msgstr ""
+
+#: admin/html-global-admin-add.php:10
+msgid "Global Add-on Reference"
+msgstr ""
+
+#: admin/html-global-admin-add.php:14
+msgid "Give this global add-on a reference/name to make it recognisable."
+msgstr ""
+
+#: admin/html-global-admin-add.php:19 admin/html-global-admin.php:11
+msgid "Priority"
+msgstr ""
+
+#: admin/html-global-admin-add.php:23
+msgid ""
+"Give this global addon a priority - this will deternmine the order in which "
+"multiple groups of addons get displayed on the frontend. Per-product add-ons "
+"will always have priority 10."
+msgstr ""
+
+#: admin/html-global-admin-add.php:28
+msgid "Applied to..."
+msgstr ""
+
+#: admin/html-global-admin-add.php:31
+msgid "Choose some options&hellip;"
+msgstr ""
+
+#: admin/html-global-admin-add.php:32 admin/html-global-admin.php:46
+msgid "All Products"
+msgstr ""
+
+#: admin/html-global-admin-add.php:33
+msgid "Product category notifications"
+msgstr ""
+
+#: admin/html-global-admin-add.php:38
+msgid "Category:"
+msgstr ""
+
+#: admin/html-global-admin-add.php:44
+msgid ""
+"Choose categories which should show these addons (or apply to all products)."
+msgstr ""
+
+#: admin/html-global-admin-add.php:58
+msgid "Save Global Add-on"
+msgstr ""
+
+#: admin/html-global-admin.php:4
+msgid "Add Global Add-on"
+msgstr ""
+
+#: admin/html-global-admin.php:9
+msgid "Reference"
+msgstr ""
+
+#: admin/html-global-admin.php:10
+msgid "Number of Fields"
+msgstr ""
+
+#: admin/html-global-admin.php:12
+msgid "Applies to..."
+msgstr ""
+
+#: admin/html-global-admin.php:13
+msgid "Actions"
+msgstr ""
+
+#: admin/html-global-admin.php:63
+msgid "Edit"
+msgstr ""
+
+#: admin/html-global-admin.php:63
+msgid "Delete"
+msgstr ""
+
+#: admin/html-global-admin.php:71
+msgid "No global add-ons exists yet."
+msgstr ""
+
+#: admin/html-global-admin.php:71
+msgid "Add one?"
+msgstr ""
+
+#: classes/class-product-addon-display.php:71
+msgid "Options total:"
+msgstr ""
+
+#: classes/class-product-addon-display.php:72
+msgid "Grand total:"
+msgstr ""
+
+#: classes/class-product-addon-display.php:73
+msgid "characters remaining"
+msgstr ""
+
+#: classes/class-product-addon-display.php:311
+msgid "Please enter letters only"
+msgstr ""
+
+#: classes/class-product-addon-display.php:325
+msgid "Please enter digits only"
+msgstr ""
+
+#: classes/class-product-addon-display.php:339
+msgid "Please enter letters or digits only"
+msgstr ""
+
+#: classes/class-product-addon-display.php:352
+msgid "Please enter an email address"
+msgstr ""
+
+#: classes/class-product-addon-display.php:404
+msgid "Select options"
+msgstr ""
+
+#: classes/fields/class-product-addon-field-custom.php:21
+#: classes/fields/class-product-addon-field-file-upload.php:29
+#: classes/fields/class-product-addon-field-list.php:15
+#: classes/fields/class-product-addon-field-select.php:14
+#, php-format
+msgid "\"%s\" is a required field."
+msgstr ""
+
+#: classes/fields/class-product-addon-field-custom.php:34
+#, php-format
+msgid "The minimum allowed length for \"%s - %s\" is %s."
+msgstr ""
+
+#: classes/fields/class-product-addon-field-custom.php:38
+#, php-format
+msgid "The maximum allowed length for \"%s - %s\" is %s."
+msgstr ""
+
+#: classes/fields/class-product-addon-field-custom.php:44
+#, php-format
+msgid "The minimum allowed amount for \"%s - %s\" is %s."
+msgstr ""
+
+#: classes/fields/class-product-addon-field-custom.php:48
+#, php-format
+msgid "The maximum allowed amount for \"%s - %s\" is %s."
+msgstr ""
+
+#: classes/fields/class-product-addon-field-custom.php:59
+#, php-format
+msgid "Please enter a value greater than 0 for \"%s - %s\"."
+msgstr ""
+
+#: classes/fields/class-product-addon-field-custom.php:64
+#, php-format
+msgid "Only letters are allowed for \"%s - %s\"."
+msgstr ""
+
+#: classes/fields/class-product-addon-field-custom.php:69
+#, php-format
+msgid "Only digits are allowed for \"%s - %s\"."
+msgstr ""
+
+#: classes/fields/class-product-addon-field-custom.php:74
+#, php-format
+msgid "Only letters and digits are allowed for \"%s - %s\"."
+msgstr ""
+
+#: classes/fields/class-product-addon-field-custom.php:79
+#, php-format
+msgid "A valid email address is required for \"%s - %s\"."
+msgstr ""
+
+#: templates/addons/addon-start.php:6
+msgid "Required field"
+msgstr ""
+
+#: templates/addons/file_upload.php:8 templates/addons/file_upload.php:14
+#, php-format
+msgid "(max file size %s)"
+msgstr ""
+
+#: templates/addons/input_multiplier.php:13
+msgid "This must be a number!"
+msgstr ""
+
+#: templates/addons/select.php:10
+msgid "None"
+msgstr ""
+
+#: templates/addons/select.php:12
+msgid "Select an option..."
+msgstr ""
