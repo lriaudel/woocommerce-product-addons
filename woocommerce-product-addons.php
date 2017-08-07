@@ -1,17 +1,18 @@
 <?php
-/*
-Plugin Name: WooCommerce Product Add-ons
-Plugin URI: https://woocommerce.com/products/product-add-ons/
-Description: WooCommerce Product Add-ons lets you add extra options to products which the user can select. Add-ons can be checkboxes, a select box, or custom input. Each option can optionally be given a price which is added to the cost of the product.
-Version: 2.8.1
-Author: WooCommerce
-Author URI: https://woocommerce.com
-Requires at least: 3.8
-Tested up to: 4.6
-WC tested up to: 2.5
-	Copyright: © 2009-2017 WooCommerce.
-	License: GNU General Public License v3.0
-	License URI: http://www.gnu.org/licenses/gpl-3.0.html
+/**
+ * Plugin Name: WooCommerce Product Add-ons
+ * Plugin URI: https://woocommerce.com/products/product-add-ons/
+ * Description: Add extra options to products which your customers can select from, when adding to the cart, with an optional fee for each extra option. Add-ons can be checkboxes, a select box, or custom text input.
+ * Version: 2.9.0
+ * Author: WooCommerce
+ * Author URI: https://woocommerce.com
+ * Requires at least: 3.8
+ * Tested up to: 4.8
+ * WC tested up to: 3.1
+ * Copyright: © 2009-2017 WooCommerce.
+ * License: GNU General Public License v3.0
+ * License URI: http://www.gnu.org/licenses/gpl-3.0.html
+ * Woo: 18618:147d0077e591e16db9d0d67daeb8c484
 */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -31,11 +32,14 @@ if ( ! function_exists( 'woothemes_queue_update' ) ) {
 woothemes_queue_update( plugin_basename( __FILE__ ), '147d0077e591e16db9d0d67daeb8c484', '18618' );
 
 if ( is_woocommerce_active() ) {
+	define( 'WC_PRODUCT_ADDONS_VERSION', '2.9.0' );
 
 	/**
 	 * Main class.
 	 */
 	class WC_Product_Addons {
+
+		protected $groups_controller;
 
 		/**
 		 * Constructor.
@@ -45,6 +49,7 @@ if ( is_woocommerce_active() ) {
 			add_action( 'plugins_loaded', array( $this, 'init_classes' ) );
 			add_action( 'init', array( $this, 'init_post_types' ), 20 );
 			add_action( 'init', array( $this, 'setup_notices' ) );
+			add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
 			register_activation_hook( __FILE__, array( $this, 'install' ) );
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'action_links' ) );
 		}
@@ -58,12 +63,22 @@ if ( is_woocommerce_active() ) {
 
 		/**
 		 * Initializes plugin classes.
+		 *
+		 * @version 2.9.0
 		 */
 		public function init_classes() {
+			// Core (models)
+			include_once( dirname( __FILE__ ) . '/includes/groups/class-product-addon-group-validator.php' );
+			include_once( dirname( __FILE__ ) . '/includes/groups/class-product-addon-global-group.php' );
+			include_once( dirname( __FILE__ ) . '/includes/groups/class-product-addon-product-group.php' );
+			include_once( dirname( __FILE__ ) . '/includes/groups/class-product-addon-groups.php' );
+
+			// Admin
 			if ( is_admin() ) {
 				$this->init_admin();
 			}
 
+			// Front-side and legacy AJAX
 			include_once( dirname( __FILE__ ) . '/includes/class-product-addon-display.php' );
 			include_once( dirname( __FILE__ ) . '/includes/class-product-addon-cart.php' );
 			include_once( dirname( __FILE__ ) . '/includes/class-product-addon-ajax.php' );
@@ -121,6 +136,18 @@ if ( is_woocommerce_active() ) {
 			);
 
 			register_taxonomy_for_object_type( 'product_cat', 'global_product_addon' );
+		}
+
+		/**
+		 * Initialize the REST API
+		 *
+		 * @since 2.9.0
+		 * @param WP_Rest_Server $wp_rest_server
+		 */
+		public function rest_api_init( $wp_rest_server ) {
+			require_once( dirname( __FILE__ ) . '/includes/api/wc-product-add-ons-groups-controller-v1.php' );
+			$this->groups_controller = new WC_Product_Add_Ons_Groups_Controller();
+			$this->groups_controller->register_routes();
 		}
 
 		/**
@@ -301,31 +328,28 @@ if ( is_woocommerce_active() ) {
 			}
 		}
 
-		$addons = apply_filters( 'get_product_addons', $addons );
-		return $addons;
+		return apply_filters( 'get_product_addons', $addons );
 	}
 
 	/**
 	 * Display prices according to shop settings.
 	 *
+	 * @version 2.8.2
+	 *
 	 * @param  float      $price     Price to display.
 	 * @param  WC_Product $cart_item Product from cart.
+	 *
 	 * @return float
 	 */
 	function get_product_addon_price_for_display( $price, $cart_item = null ) {
-		global $product;
+		$product = ! empty( $GLOBALS['product'] ) && is_object( $GLOBALS['product'] ) ? clone $GLOBALS['product'] : null;
 
 		if ( '' === $price || '0' == $price ) {
 			return;
 		}
 
 		if ( ( is_cart() || is_checkout() ) && null !== $cart_item ) {
-			// Support new WooCommerce 3.0 WC_Product->get_id().
-			if ( is_callable( $cart_item, 'get_id' ) ) {
-				$product = wc_get_product( $cart_item->get_id() );
-			} else {
-				$product = wc_get_product( $cart_item->id );
-			}
+			$product = wc_get_product( $cart_item->get_id() );
 		}
 
 		if ( is_object( $product ) ) {

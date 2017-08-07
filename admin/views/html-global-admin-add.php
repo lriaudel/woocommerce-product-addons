@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</th>
 				<td>
 					<input type="text" name="addon-priority" id="addon-priority" style="width:50%;" value="<?php echo esc_attr( $priority ); ?>" />
-					<p class="description"><?php _e( 'Give this global addon a priority - this will deternmine the order in which multiple groups of addons get displayed on the frontend. Per-product add-ons will always have priority 10.', 'woocommerce-product-addons' ); ?></p>
+					<p class="description"><?php _e( 'Give this global addon a priority - this will determine the order in which multiple groups of addons get displayed on the frontend. Per-product add-ons will always have priority 10.', 'woocommerce-product-addons' ); ?></p>
 				</td>
 			</tr>
 			<tr>

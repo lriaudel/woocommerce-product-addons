@@ -35,7 +35,6 @@ global $post;
 					<label for="addon_name_<?php echo $loop; ?>">
 						<?php
 							_e( 'Name', 'woocommerce-product-addons' );
-							echo wc_help_tip( __( 'Will display on the frontend', 'woocommerce-product-addons' ) );
 						?>
 					</label>
 					<input type="text" id="addon_name_<?php echo $loop; ?>" name="product_addon_name[<?php echo $loop; ?>]" value="<?php echo esc_attr( $addon['name'] ) ?>" />
@@ -50,7 +49,6 @@ global $post;
 					<label for="addon_description_<?php echo $loop; ?>">
 						<?php
 							_e( 'Description', 'woocommerce-product-addons' );
-							echo wc_help_tip( __( 'Will display on the frontend', 'woocommerce-product-addons' ) );
 						?>
 					</label>
 					<textarea cols="20" id="addon_description_<?php echo $loop; ?>" rows="3" name="product_addon_description[<?php echo $loop; ?>]"><?php echo esc_textarea( $addon['description'] ) ?></textarea>

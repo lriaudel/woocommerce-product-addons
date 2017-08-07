@@ -37,8 +37,8 @@ class Product_Addon_Field_Select extends Product_Addon_Field {
 				$chosen_option = $option;
 				break;
 			}
-			
 		}
+
 		if ( ! $chosen_option ) {
 			return false;
 		}
@@ -48,6 +48,7 @@ class Product_Addon_Field_Select extends Product_Addon_Field {
 			'value' => $chosen_option['label'],
 			'price' => $this->get_option_price( $chosen_option )
 		);
+
 		return $cart_item_data;
 	}
 }

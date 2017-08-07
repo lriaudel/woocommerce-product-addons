@@ -1,5 +1,22 @@
 *** Product Addons Changelog ***
 
+2017-07-13 - version 2.9.0
+* Fix - Further updates for WooCommerce 3.0 compatibility.
+* Fix - Minor code cleanup (unused variable, PHPDocs).
+* Fix - Variable products with required custom textarea not able to add to cart.
+* Fix - Prevent global addon fields not saving when no name is entered.
+* Fix - Issue resetting global product.
+* Fix - Don't make custom price input required when not set.
+* Add - new REST API endpoints for managing global and product addons
+* Fix - Fatal error when combined with the Memberships extension.
+* Fix - When grouped product contains simple and subscription product amount suffix shown incorrectly.
+* Fix - Re-order addons were not being added.
+* Fix - Notices when product object not found.
+* Fix - Prevent filtering prices twice due to context issue.
+* Fix - Inline VAT/TAX pricing not updating correctly on product page on addon grand total.
+* New - Added the new Woo plugin header, for WooCommerce 3.1 compatibility.
+* New - Compatibility with Smart Coupons Credit/gift coupon.
+
 2017-04-03 - version 2.8.1
 * Fix - Update for WooCommerce 3.0 compatibility.
 
