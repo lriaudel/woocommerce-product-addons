@@ -46,23 +46,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	<?php endif; ?>
 </div>
-<?php
-$empty_name_message = __( 'All addon fields require a name.', 'woocommerce-product-addons' );
-?>
 <script type="text/javascript">
-	jQuery(function( $ ){
-		$( '.product_page_global_addons' ).on( 'click', 'input[type="submit"]', function( e ) {
-			// Loop through all addons to validate them.
-			$( '.woocommerce_product_addons' ).find( '.woocommerce_product_addon' ).each( function() {
-				if ( 0 === $( this ).find( '.addon_name input' ).val().length ) {
-					e.preventDefault();
-
-					alert( '<?php echo $empty_name_message; ?>' );
-
-					return false;
-				}
-			});
-		});
+	jQuery(function(){
 
 		jQuery('#product_addons_data')
 		.on( 'change', '.addon_name input', function() {
@@ -87,31 +72,11 @@ $empty_name_message = __( 'All addon fields require a name.', 'woocommerce-produ
 				jQuery(this).closest('.woocommerce_product_addon').find('td.price_column, th.price_column').show();
 			}
 
-			// Switch up the column title, based on the field type selected
-			switch ( value ) {
-				case 'custom_price':
-					column_title = '<?php echo esc_js( __( 'Min / max price', 'woocommerce-product-addons' ) ); ?>';
-				break;
-
-				case 'input_multiplier':
-					column_title = '<?php echo esc_js( __( 'Min / max multiplier', 'woocommerce-product-addons' ) ); ?>';
-				break;
-
-				case 'custom_textarea':
-				case 'custom_letters_only':
-				case 'custom_digits_only':
-				case 'custom_letters_or_digits':
-				case 'custom_email':
-				case 'custom':
-					column_title = '<?php echo esc_js( __( 'Min / max characters', 'woocommerce-product-addons' ) ); ?>';
-				break;
-
-				default:
-					column_title = '<?php echo esc_js( __( 'Min / max', 'woocommerce-product-addons' ) ); ?>';
-				break;
+			if ( value == 'custom_textarea' || value == 'custom' || value == 'custom_letters_only' || value == 'custom_digits_only' || value == 'custom_letters_or_digits' || value == 'custom_email' ) {
+				jQuery(this).closest('.woocommerce_product_addon').find('th.minmax_column .column-title').replaceWith( '<span class="column-title">' + '<?php _e('Min / max characters', 'woocommerce-product-addons'); ?>' + '</span>' );
+			} else {
+				jQuery(this).closest('.woocommerce_product_addon').find('th.minmax_column .column-title').replaceWith( '<span class="column-title">' + '<?php _e('Min / max', 'woocommerce-product-addons'); ?>' + '</span>' );
 			}
-
-			jQuery(this).closest('.woocommerce_product_addon').find('th.minmax_column .column-title').replaceWith( '<span class="column-title">' + column_title + '</span>' );
 
 			// Count the number of options.  If one (or less), disable the remove option buttons
 			var removeAddOnOptionButtons = jQuery(this).closest('.woocommerce_product_addon').find('button.remove_addon_option');
@@ -187,7 +152,7 @@ $empty_name_message = __( 'All addon fields require a name.', 'woocommerce-produ
 			if (answer) {
 				var addon = jQuery(this).closest('.woocommerce_product_addon');
 				jQuery(addon).find('input').val('');
-				jQuery(addon).remove();
+				jQuery(addon).hide();
 			}
 
 			return false;
@@ -259,7 +224,7 @@ $empty_name_message = __( 'All addon fields require a name.', 'woocommerce-produ
 		});
 
 		// Remove option
-		jQuery('button.remove_addon_option').on('click', function(){
+		jQuery('button.remove_addon_option').live('click', function(){
 
 			var answer = confirm('<?php _e('Are you sure you want delete this option?', 'woocommerce-product-addons'); ?>');
 

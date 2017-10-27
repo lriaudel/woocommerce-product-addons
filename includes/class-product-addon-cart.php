@@ -43,26 +43,12 @@ class Product_Addon_Cart {
 	/**
 	 * Adjust add-on proce if set on cart.
 	 *
-	 * @since 2.7.0
-	 * @version 2.9.0
 	 * @param array $cart_item Cart item data.
 	 * @return array
 	 */
 	public function add_cart_item( $cart_item ) {
 		if ( ! empty( $cart_item['addons'] ) && apply_filters( 'woocommerce_product_addons_adjust_price', true, $cart_item ) ) {
-			$price = (float) $cart_item['data']->get_price( 'edit' );
-
-			// Compatibility with Smart Coupons self declared gift amount purchase.
-			if ( empty( $price ) && ! empty( $_POST['credit_called'] ) ) {
-				// $_POST['credit_called'] is an array.
-				if ( isset( $_POST['credit_called'][ $cart_item['data']->get_id() ] ) ) {
-					$price = (float) $_POST['credit_called'][ $cart_item['data']->get_id() ];
-				}
-			}
-
-			if ( empty( $price ) && ! empty( $cart_item['credit_amount'] ) ) {
-				$price = (float) $cart_item['credit_amount'];
-			}
+			$price = $cart_item['data']->get_price();
 
 			foreach ( $cart_item['addons'] as $addon ) {
 				if ( $addon['price'] > 0 ) {
@@ -137,9 +123,6 @@ class Product_Addon_Cart {
 	 * @param array $cart_item_meta Cart item meta data.
 	 * @param int   $product_id     Product ID.
 	 * @param bool  $test           If this is a test i.e. just getting data but not adding to cart. Used to prevent uploads.
-	 *
-	 * @throws Exception
-	 *
 	 * @return array
 	 */
 	public function add_cart_item_data( $cart_item_meta, $product_id, $post_data = null, $test = false ) {
@@ -314,8 +297,6 @@ class Product_Addon_Cart {
 	 * @return array Cart item meta
 	 */
 	public function re_add_cart_item_data( $cart_item_meta, $product, $order ) {
-		$is_pre_30 = version_compare( WC_VERSION, '3.0.0', '<' );
-
 		// Disable validation.
 		remove_filter( 'woocommerce_add_to_cart_validation', array( $this, 'validate_add_cart_item' ), 999, 3 );
 
@@ -345,7 +326,7 @@ class Product_Addon_Cart {
 								if ( 1 < count( $meta ) ) {
 									$value[] = array_map( 'sanitize_title', $meta );
 								} else {
-									$value[] = sanitize_title( $is_pre_30 ? $meta[0] : $meta );
+									$value[] = sanitize_title( $meta[0] );
 								}
 							}
 						}
@@ -363,7 +344,7 @@ class Product_Addon_Cart {
 
 						foreach ( $product['item_meta'] as $key => $meta ) {
 							if ( stripos( $key, $addon['name'] ) === 0 ) {
-								$value = sanitize_title( $is_pre_30 ? $meta[0] : $meta );
+								$value = sanitize_title( $meta[0] );
 
 								break;
 							}
@@ -373,7 +354,8 @@ class Product_Addon_Cart {
 							continue;
 						}
 
-						$loop = 0;
+						$chosen_option = '';
+						$loop          = 0;
 
 						foreach ( $addon['options'] as $option ) {
 							$loop++;
@@ -390,10 +372,6 @@ class Product_Addon_Cart {
 					case 'custom_textarea' :
 					case 'custom_price' :
 					case 'input_multiplier' :
-					case 'custom_letters_only' :
-					case 'custom_digits_only' :
-					case 'custom_letters_or_digits' :
-					case 'custom_email' :
 						include_once( dirname( __FILE__ ) . '/fields/class-product-addon-field-custom.php' );
 
 						$value = array();
@@ -401,7 +379,7 @@ class Product_Addon_Cart {
 						foreach ( $product['item_meta'] as $key => $meta ) {
 							foreach ( $addon['options'] as $option ) {
 								if ( stripos( $key, $addon['name'] ) === 0 && stristr( $key, $option['label'] ) ) {
-									$value[ sanitize_title( $option['label'] ) ] = $is_pre_30 ? $meta[0] : $meta;
+									$value[ sanitize_title( $option['label'] ) ] = $meta[0];
 								}
 							}
 						}
@@ -420,7 +398,7 @@ class Product_Addon_Cart {
 						foreach ( $product['item_meta'] as $key => $meta ) {
 							foreach ( $addon['options'] as $option ) {
 								if ( stripos( $key, $addon['name'] ) === 0 && stristr( $key, $option['label'] ) ) {
-									$value[ sanitize_title( $option['label'] ) ] = $is_pre_30 ? $meta[0] : $meta;
+									$value[ sanitize_title( $option['label'] ) ] = $meta[0];
 								}
 							}
 						}

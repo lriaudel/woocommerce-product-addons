@@ -20,30 +20,52 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</thead>
 		<tbody id="the-list">
 			<?php
-				$global_addons = Product_Addon_Groups::get_all_global_groups();
+				$args = array(
+					'posts_per_page'  => -1,
+					'orderby'         => 'title',
+					'order'           => 'ASC',
+					'post_type'       => 'global_product_addon',
+					'post_status'     => 'any',
+					'suppress_filters' => true
+				);
+
+				$global_addons = get_posts( $args );
 
 				if ( $global_addons ) {
 					foreach ( $global_addons as $global_addon ) {
+						$reference      = $global_addon->post_title;
+						$priority       = get_post_meta( $global_addon->ID, '_priority', true );
+						$objects        = (array) wp_get_post_terms( $global_addon->ID, apply_filters( 'woocommerce_product_addons_global_post_terms', array( 'product_cat' ) ), array( 'fields' => 'ids' ) );
+						$product_addons = array_filter( (array) get_post_meta( $global_addon->ID, '_product_addons', true ) );
+						if ( get_post_meta( $global_addon->ID, '_all_products', true ) == 1 ) {
+							$objects[] = 0;
+						}
 						?>
 						<tr>
-							<td><?php echo $global_addon['name']; ?></td>
-							<td><?php echo sizeof( $global_addon['fields'] ); ?></td>
-							<td><?php echo $global_addon['priority']; ?></td>
+							<td><?php echo $reference; ?></td>
+							<td><?php echo sizeof( $product_addons ); ?></td>
+							<td><?php echo $priority; ?></td>
 							<td><?php
 
-								$restrict_to_categories = $global_addon['restrict_to_categories'];
-								if ( 0 === count( $restrict_to_categories) ) {
+								if ( in_array( 0, $objects ) ) {
 									_e( 'All Products', 'woocommerce-product-addons' );
 								} else {
-									$objects = array_keys( $restrict_to_categories );
-									$term_names = array_values( $restrict_to_categories );
+									$term_names = array();
+									foreach ( $objects as $object_id ) {
+										$term = get_term_by( 'id', $object_id, 'product_cat' );
+										if ( $term ) {
+											$term_names[] = $term->name;
+										}
+									}
+
 									$term_names = apply_filters( 'woocommerce_product_addons_global_display_term_names', $term_names, $objects );
+
 									echo implode( ', ', $term_names );
 								}
 
 							?></td>
 							<td>
-								<a href="<?php echo add_query_arg( 'edit', $global_addon['id'], admin_url( 'edit.php?post_type=product&page=global_addons' ) ); ?>" class="button"><?php _e( 'Edit', 'woocommerce-product-addons' ); ?></a> <a href="<?php echo wp_nonce_url( add_query_arg( 'delete', $global_addon['id'], admin_url( 'edit.php?post_type=product&page=global_addons' ) ), 'delete_addon' ); ?>" class="button"><?php _e( 'Delete', 'woocommerce-product-addons' ); ?></a>
+								<a href="<?php echo add_query_arg( 'edit', $global_addon->ID, admin_url( 'edit.php?post_type=product&page=global_addons' ) ); ?>" class="button"><?php _e( 'Edit', 'woocommerce-product-addons' ); ?></a> <a href="<?php echo wp_nonce_url( add_query_arg( 'delete', $global_addon->ID, admin_url( 'edit.php?post_type=product&page=global_addons' ) ), 'delete_addon' ); ?>" class="button"><?php _e( 'Delete', 'woocommerce-product-addons' ); ?></a>
 							</td>
 						</tr>
 						<?php

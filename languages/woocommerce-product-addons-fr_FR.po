@@ -1,21 +1,21 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Product Add-ons\n"
-"POT-Creation-Date: 2016-03-18 15:33-0800\n"
-"PO-Revision-Date: 2016-03-18 15:33-0800\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2017-06-29 20:37+0200\n"
+"PO-Revision-Date: 2017-06-29 20:41+0200\n"
 "Language-Team: \n"
-"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7.3\n"
+"X-Generator: Poedit 2.0.2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
 "_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Last-Translator: \n"
+"Language: fr_FR\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
@@ -256,15 +256,15 @@ msgstr ""
 
 #: admin/html-global-admin.php:13
 msgid "Actions"
-msgstr ""
+msgstr "Actions"
 
 #: admin/html-global-admin.php:63
 msgid "Edit"
-msgstr ""
+msgstr "Editer"
 
 #: admin/html-global-admin.php:63
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
 #: admin/html-global-admin.php:71
 msgid "No global add-ons exists yet."
@@ -280,31 +280,31 @@ msgstr ""
 
 #: classes/class-product-addon-display.php:72
 msgid "Grand total:"
-msgstr ""
+msgstr "Total global:"
 
 #: classes/class-product-addon-display.php:73
 msgid "characters remaining"
-msgstr ""
+msgstr "caractères restants"
 
 #: classes/class-product-addon-display.php:311
 msgid "Please enter letters only"
-msgstr ""
+msgstr "N’entrez que des lettres s'il vous plaît"
 
 #: classes/class-product-addon-display.php:325
 msgid "Please enter digits only"
-msgstr ""
+msgstr "Veuillez entrer uniquement des chiffres"
 
 #: classes/class-product-addon-display.php:339
 msgid "Please enter letters or digits only"
-msgstr ""
+msgstr "Veuillez entrer uniquement des chiffres ou des lettres"
 
 #: classes/class-product-addon-display.php:352
 msgid "Please enter an email address"
-msgstr ""
+msgstr "Veuillez entrer uniquement une adresse mail"
 
 #: classes/class-product-addon-display.php:404
 msgid "Select options"
-msgstr ""
+msgstr "Voir les options"
 
 #: classes/fields/class-product-addon-field-custom.php:21
 #: classes/fields/class-product-addon-field-file-upload.php:29
@@ -361,7 +361,7 @@ msgstr ""
 
 #: templates/addons/addon-start.php:6
 msgid "Required field"
-msgstr ""
+msgstr "Champ obligatoire"
 
 #: templates/addons/file_upload.php:8 templates/addons/file_upload.php:14
 #, php-format
@@ -374,8 +374,8 @@ msgstr ""
 
 #: templates/addons/select.php:10
 msgid "None"
-msgstr ""
+msgstr "Aucun"
 
 #: templates/addons/select.php:12
 msgid "Select an option..."
-msgstr ""
+msgstr "Choisir une option…"

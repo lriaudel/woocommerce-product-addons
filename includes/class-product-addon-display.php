@@ -30,9 +30,9 @@ class Product_Addon_Display {
 
 		// Change buttons/cart urls.
 		add_filter( 'add_to_cart_text', array( $this, 'add_to_cart_text' ), 15 );
-		add_filter( 'woocommerce_product_add_to_cart_text', array( $this, 'add_to_cart_text' ), 15, 2 );
+		add_filter( 'woocommerce_product_add_to_cart_text', array( $this, 'add_to_cart_text' ), 15 );
 		add_filter( 'woocommerce_add_to_cart_url', array( $this, 'add_to_cart_url' ), 10, 1 );
-		add_filter( 'woocommerce_product_add_to_cart_url', array( $this, 'add_to_cart_url' ), 10, 2 );
+		add_filter( 'woocommerce_product_add_to_cart_url', array( $this, 'add_to_cart_url' ), 10, 1 );
 		add_filter( 'woocommerce_product_supports', array( $this, 'ajax_add_to_cart_supports' ), 10, 3 );
 		add_filter( 'woocommerce_is_purchasable', array( $this, 'prevent_purchase_at_grouped_level' ), 10, 2 );
 
@@ -302,7 +302,7 @@ class Product_Addon_Display {
 	public function get_custom_letters_only_html( $addon ) {
 		wc_get_template( 'addons/custom_pattern.php', array(
 			'addon'   => $addon,
-			'pattern' => '[A-Za-z ]*',
+			'pattern' => '[A-Za-z]*',
 			'title'   => __( 'Please enter letters only', 'woocommerce-product-addons' ),
 		), 'woocommerce-product-addons', $this->plugin_path() . '/templates/' );
 	}
@@ -328,7 +328,7 @@ class Product_Addon_Display {
 	public function get_custom_letters_or_digits_html( $addon ) {
 		wc_get_template( 'addons/custom_pattern.php', array(
 			'addon' => $addon,
-			'pattern' => '[A-Za-z0-9 ]*',
+			'pattern' => '[A-Za-z0-9]*',
 			'title' => __( 'Please enter letters or digits only', 'woocommerce-product-addons' ),
 		), 'woocommerce-product-addons', $this->plugin_path() . '/templates/' );
 	}
@@ -380,20 +380,11 @@ class Product_Addon_Display {
 	/**
 	 * Add to cart text.
 	 *
-	 * @since 1.0.0
-	 * @version 2.9.0
 	 * @param string $text Add to cart text.
-	 * @param object $product
 	 * @return string
 	 */
-	public function add_to_cart_text( $text, $product = null ) {
-		if ( null === $product ) {
-			global $product;
-		}
-
-		if ( ! is_a( $product, 'WC_Product' ) ) {
-			return $text;
-		}
+	public function add_to_cart_text( $text ) {
+		global $product;
 
 		if ( ! is_single( $product->get_id() ) ) {
 			if ( $this->check_required_addons( $product->get_id() ) ) {
@@ -423,20 +414,11 @@ class Product_Addon_Display {
 	/**
 	 * Include product add-ons to add to cart URL.
 	 *
-	 * @since 1.0.0
-	 * @version 2.9.0
 	 * @param string $url Add to cart URL.
-	 * @param object $product
 	 * @return string
 	 */
-	public function add_to_cart_url( $url, $product = null ) {
-		if ( null === $product ) {
-			global $product;
-		}
-
-		if ( ! is_a( $product, 'WC_Product' ) ) {
-			return $url;
-		}
+	public function add_to_cart_url( $url ) {
+		global $product;
 
 		if ( ! is_single( $product->get_id() ) && in_array( $product->get_type(), apply_filters( 'woocommerce_product_addons_add_to_cart_product_types', array( 'subscription', 'simple' ) ) ) && ( ! isset( $_GET['wc-api'] ) || 'WC_Quick_View' !== $_GET['wc-api'] ) ) {
 			if ( $this->check_required_addons( $product->get_id() ) ) {
@@ -455,13 +437,7 @@ class Product_Addon_Display {
 	 * @return bool
 	 */
 	public function prevent_purchase_at_grouped_level( $purchasable, $product ) {
-		if ( version_compare( WC_VERSION, '3.0.0', '<' ) ) {
-			$product_id = $product->parent->id;
-		} else {
-			$product_id = $product->get_parent_id();
-		}
-
-		if ( $product && ! $product->is_type( 'variation' ) && $product_id && is_single( $product_id ) && $this->check_required_addons( $product->get_id() ) ) {
+		if ( $product && $product->get_parent_id() && is_single( $product->get_parent_id() ) && $this->check_required_addons( $product->get_id() ) ) {
 			$purchasable = false;
 		}
 		return $purchasable;
@@ -476,8 +452,7 @@ class Product_Addon_Display {
 	public function fix_file_uploaded_display( $meta_value ) {
 		global $wp;
 
-		// If the value is a string, is a URL to an uploaded file, and we're not in the WC API, reformat this string as an anchor tag.
-		if ( is_string( $meta_value ) && ! isset( $wp->query_vars['wc-api'] ) && false !== strpos( $meta_value, '/product_addons_uploads/' ) ) {
+		if ( ! isset( $wp->query_vars['wc-api'] ) && false !== strpos( $meta_value, '/product_addons_uploads/' ) ) {
 			$file_url   = $meta_value;
 			$meta_value = basename( $meta_value );
 			$meta_value = '<a href="' . esc_url( $file_url ) . '">' . esc_html( $meta_value ) . '</a>';

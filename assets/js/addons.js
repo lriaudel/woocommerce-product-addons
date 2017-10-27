@@ -2,51 +2,7 @@ jQuery( document ).ready( function($) {
 
 	$.fn.init_addon_totals = function() {
 
-		function isGroupedMixedProductType() {
-			var group  = $( '.product-type-grouped' ),
-				subs   = 0,
-				simple = 0;
-
-			if ( group.length ) {
-				group.find( '.group_table tr.product' ).each( function() {
-					if ( 0 < $( this ).find( '.input-text.qty' ).val() ) {
-						// For now only checking between simple and subs.
-						if ( $( this ).find( '.entry-summary .subscription-details' ).length ) {
-							subs++;
-						} else {
-							simple++;
-						}
-					}
-				});
-
-				if ( 0 < subs && 0 < simple ) {
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		function isGroupedSubsSelected() {
-			var group = $( '.product-type-grouped' ),
-				subs  = false;
-
-			if ( group.length ) {
-				group.find( '.group_table tr.product' ).each( function() {
-					if ( 0 < $( this ).find( '.input-text.qty' ).val() ) {
-						if ( $( this ).find( '.entry-summary .subscription-details' ).length ) {
-							subs = true;
-							return false;
-						}
-					}
-				});
-			}
-
-			return subs;
-		}
-
 		var $cart = $( this );
-		var $variation = '';
 
 		// Clear all values on variable product when clear selection is clicked
 		$( this ).on( 'click', '.reset_variations', function() {
@@ -123,24 +79,16 @@ jQuery( document ).ready( function($) {
 				$totals.data( 'price', product_price );
 			}
 
-			$variation = variation;
 			$variation_form.trigger( 'woocommerce-product-addons-update' );
 		});
 
-		// Compatibility with Smart Coupons self declared gift amount purchase.
-		var custom_gift_card_amount = $( '#credit_called' );
-
-		$( custom_gift_card_amount ).on( 'keyup', function() {
-			$cart.trigger( 'woocommerce-product-addons-update' );
-		});
-
 		$( this ).on( 'woocommerce-product-addons-update', function() {
+
 			var total         = 0;
 			var $totals       = $cart.find( '#product-addons-total' );
 			var product_price = $totals.data( 'price' );
 			var product_type  = $totals.data( 'type' );
-			var product_id    = 'object' === typeof( $variation ) ? $variation.variation_id : $totals.data( 'product-id' );
-			var qty           = $cart.find( '.quantity .qty' ).val();
+			var product_id    = $totals.data( 'product-id' );
 
 			// We will need some data about tax modes (both store and display)
 			// and 'raw prices' (prices that don't take into account taxes) so we can use them in some
@@ -149,11 +97,6 @@ jQuery( document ).ready( function($) {
 			var tax_mode         = $totals.data( 'tax-mode' );
 			var tax_display_mode = $totals.data( 'tax-display-mode' );
 			var total_raw        = 0;
-
-			// Compatibility with Smart Coupons self declared gift amount purchase.
-			if ( '' === product_price && custom_gift_card_amount.length && 0 < custom_gift_card_amount.val() ) {
-				product_price = custom_gift_card_amount.val();
-			}
 
 			$cart.find( '.addon' ).each( function() {
 				var addon_cost = 0;
@@ -261,15 +204,8 @@ jQuery( document ).ready( function($) {
 						subscription_details = $( '.entry-summary .subscription-details' ).clone().wrap( '<p>' ).parent().html();
 					}
 				}
-				
-				if ( 'grouped' === product_type ) {
-					if ( subscription_details && ! isGroupedMixedProductType() && isGroupedSubsSelected() ) {
-						formatted_addon_total += subscription_details;
-						if ( formatted_grand_total ) {
-							formatted_grand_total += subscription_details;
-						}
-					}
-				} else if ( subscription_details ) {
+
+				if ( subscription_details ) {
 					formatted_addon_total += subscription_details;
 					if ( formatted_grand_total ) {
 						formatted_grand_total += subscription_details;
@@ -301,6 +237,30 @@ jQuery( document ).ready( function($) {
 						return;
 					}
 
+					// If prices are entered exclusive of tax but display inclusive, we have enough data from our totals above
+					// to do a simple replacement and output the totals string
+					if (  'excl' === tax_mode && 'incl' === tax_display_mode ) {
+						price_display_suffix = '<small class="woocommerce-price-suffix">' + woocommerce_addons_params.price_display_suffix + '</small>';
+						price_display_suffix = price_display_suffix.replace( '{price_including_tax}', formatted_grand_total );
+						price_display_suffix = price_display_suffix.replace( '{price_excluding_tax}', formatted_raw_total );
+						html                 = html + '<dt>' + woocommerce_addons_params.i18n_grand_total + '</dt><dd><strong><span class="amount">' + formatted_grand_total + '</span> ' + price_display_suffix + ' </strong></dd></dl>';
+						$totals.html( html );
+						$cart.trigger( 'updated_addons' );
+						return;
+					}
+
+					// Prices are entered inclusive of tax mode but displayed exclusive, we have enough data from our totals above
+					// to do a simple replacement and output the totals string.
+					if ( 'incl' === tax_mode && 'excl' === tax_display_mode ) {
+						price_display_suffix = '<small class="woocommerce-price-suffix">' + woocommerce_addons_params.price_display_suffix + '</small>';
+						price_display_suffix = price_display_suffix.replace( '{price_including_tax}', formatted_raw_total );
+						price_display_suffix = price_display_suffix.replace( '{price_excluding_tax}', formatted_grand_total );
+						html                 = html + '<dt>' + woocommerce_addons_params.i18n_grand_total + '</dt><dd><strong><span class="amount">' + formatted_grand_total + '</span> ' + price_display_suffix + ' </strong></dd></dl>';
+						$totals.html( html );
+						$cart.trigger( 'updated_addons' );
+						return;
+					}
+
 					// Based on the totals/info and settings we have, we need to use the get_price_*_tax functions
 					// to get accurate totals. We can get these values with a special Ajax function
 					$.ajax( {
@@ -308,12 +268,11 @@ jQuery( document ).ready( function($) {
 						url:  woocommerce_addons_params.ajax_url,
 						data: {
 							action: 'wc_product_addons_calculate_tax',
-							product_id: product_id,
-							add_on_total: total,
-							add_on_total_raw: total_raw,
-							qty: qty
+							total:  product_total_price + total,
+							product_id: product_id
 						},
-						success: 	function( result ) {
+						success: 	function( code ) {
+							result = $.parseJSON( code );
 							if ( result.result == 'SUCCESS' ) {
 								price_display_suffix = '<small class="woocommerce-price-suffix">' + woocommerce_addons_params.price_display_suffix + '</small>';
 								var formatted_price_including_tax = accounting.formatMoney( result.price_including_tax, {

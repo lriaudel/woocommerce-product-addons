@@ -29,8 +29,6 @@ class Product_Addon_Cart_Legacy extends Product_Addon_Cart {
 	 * add_cart_item function.
 	 *
 	 * @param array $cart_item
-	 *
-	 * @return array
 	 */
 	public function add_cart_item( $cart_item ) {
 		// Adjust price if addons are set
